@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="A 2-minute quiz for women over 40 to find out what's really blocking weight loss in perimenopause.">
+<title>Why Can't I Lose Weight? — The 2-Minute Quiz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@800;900&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ---------- BRAND TOKENS — edit these to match transformstrong.com ---------- */
+  :root {
+    --brand-primary: #159795;        /* Transform Strong teal */
+    --brand-primary-dark: #0F7470;
+    --brand-accent: #0A4D4B;         /* deep teal */
+    --brand-gold: #D4A574;
+    --brand-cream: #FAF6F0;
+    --brand-cream-deep: #EFE8DA;
+    --brand-ink: #1A1A1A;            /* near-black */
+    --brand-muted: #6B6863;
+    --brand-card: #FFFFFF;
+    --brand-shadow: 0 20px 60px -20px rgba(26, 26, 26, 0.18);
+    --brand-shadow-soft: 0 8px 24px -12px rgba(26, 26, 26, 0.13);
+    --radius-lg: 22px;
+    --radius-md: 14px;
+    --radius-sm: 10px;
+    --serif: 'Playfair Display', Georgia, serif;
+    --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    min-height: 100%;
+    font-family: var(--sans);
+    color: var(--brand-ink);
+    background: var(--brand-cream);
+    background-image:
+      radial-gradient(1200px 600px at 90% -10%, rgba(212, 165, 116, 0.16), transparent 60%),
+      radial-gradient(1000px 700px at -10% 110%, rgba(21, 151, 149, 0.10), transparent 55%);
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.55;
+  }
+
+  .page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 32px 20px 48px;
+  }
+
+  /* ---------- Header ---------- */
+  .brand-header {
+    width: 100%;
+    max-width: 720px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 28px;
+  }
+  .brand-logo {
+    display: block;
+    max-width: 320px;
+    width: 100%;
+    height: auto;
+  }
+  /* Fallback wordmark if logo image is missing — styled to match the heavy geometric look */
+  .brand-logo-text {
+    font-family: 'Orbitron', 'Inter', sans-serif;
+    font-weight: 900;
+    font-size: clamp(20px, 4.2vw, 28px);
+    letter-spacing: 0.04em;
+    color: var(--brand-ink);
+    text-transform: uppercase;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  /* ---------- Progress bar ---------- */
+  .progress-wrap {
+    width: 100%;
+    max-width: 720px;
+    margin-bottom: 18px;
+    opacity: 0;
+    transform: translateY(-4px);
+    transition: opacity .4s ease, transform .4s ease;
+  }
+  .progress-wrap.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .progress-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--brand-muted);
+    margin-bottom: 8px;
+  }
+  .progress-track {
+    height: 8px;
+    background: var(--brand-cream-deep);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--brand-primary), var(--brand-gold));
+    border-radius: 999px;
+    transition: width .55s cubic-bezier(.2,.8,.2,1);
+  }
+
+  /* ---------- Card ---------- */
+  .card {
+    width: 100%;
+    max-width: 720px;
+    background: var(--brand-card);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--brand-shadow);
+    padding: 44px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 5px;
+    background: linear-gradient(90deg, var(--brand-primary), var(--brand-gold), var(--brand-accent));
+  }
+
+  /* ---------- Screens & transitions ---------- */
+  .screen {
+    display: none;
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity .45s ease, transform .45s ease;
+  }
+  .screen.active {
+    display: block;
+  }
+  .screen.entering {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .screen.exiting {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  /* ---------- Welcome intro (sits outside the card) ---------- */
+  .welcome-intro {
+    width: 100%;
+    max-width: 640px;
+    margin: 0 auto 28px;
+    padding: 8px 12px 0;
+    text-align: center;
+  }
+  .pill {
+    display: inline-block;
+    background: var(--brand-primary);
+    color: #fff;
+    padding: 9px 22px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    line-height: 1.2;
+  }
+  .welcome-intro .pill {
+    margin-bottom: 22px;
+  }
+  h1.hero {
+    font-family: var(--serif);
+    font-weight: 800;
+    font-size: clamp(34px, 6vw, 52px);
+    line-height: 1.05;
+    letter-spacing: -0.015em;
+    margin-bottom: 18px;
+    color: var(--brand-ink);
+  }
+  h1.hero em {
+    display: block;
+    font-style: italic;
+    color: var(--brand-primary);
+    font-weight: 700;
+    margin-top: 4px;
+  }
+  .lede {
+    font-size: 17px;
+    color: var(--brand-muted);
+    max-width: 540px;
+    margin: 0 auto 22px;
+    line-height: 1.55;
+  }
+  .lede strong { color: var(--brand-ink); }
+  .time-tag {
+    color: var(--brand-primary);
+    font-weight: 600;
+    font-size: 14.5px;
+    letter-spacing: 0.01em;
+    margin: 0;
+  }
+  .time-tag svg {
+    vertical-align: -3px;
+    margin-right: 6px;
+  }
+
+  /* ---------- Welcome card (BEFORE WE START section) ---------- */
+  #screen-welcome .pill {
+    margin-bottom: 18px;
+  }
+  .welcome-h2 {
+    font-family: var(--serif);
+    font-weight: 800;
+    font-size: clamp(26px, 4.4vw, 36px);
+    line-height: 1.18;
+    letter-spacing: -0.01em;
+    margin-bottom: 18px;
+    color: var(--brand-ink);
+  }
+  .welcome-h2 em {
+    color: var(--brand-primary);
+    font-style: italic;
+    font-weight: 800;
+  }
+  .welcome-body {
+    font-size: 16.5px;
+    line-height: 1.65;
+    color: var(--brand-ink);
+    margin-bottom: 26px;
+  }
+  .welcome-body strong {
+    color: var(--brand-ink);
+    font-weight: 700;
+  }
+  .callout {
+    background: rgba(21, 151, 149, 0.07);
+    border: 1px solid rgba(21, 151, 149, 0.18);
+    border-left: 4px solid var(--brand-primary);
+    border-radius: var(--radius-md);
+    padding: 22px 24px 22px 22px;
+    margin-bottom: 28px;
+  }
+  .callout-title {
+    color: var(--brand-primary);
+    font-size: 12.5px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .callout ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .callout li {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin-bottom: 12px;
+    font-size: 15.5px;
+    line-height: 1.55;
+    color: var(--brand-ink);
+  }
+  .callout li:last-child {
+    margin-bottom: 0;
+  }
+  .callout-icon {
+    flex-shrink: 0;
+    font-size: 17px;
+    width: 22px;
+    text-align: center;
+    line-height: 1.45;
+  }
+
+  /* ---------- Question ---------- */
+  .q-number {
+    color: var(--brand-primary);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  h2.question {
+    font-family: var(--serif);
+    font-size: clamp(22px, 3.4vw, 28px);
+    font-weight: 700;
+    line-height: 1.25;
+    margin-bottom: 24px;
+    color: var(--brand-ink);
+  }
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+  .option {
+    display: block;
+    text-align: left;
+    width: 100%;
+    background: var(--brand-cream);
+    border: 2px solid transparent;
+    border-radius: var(--radius-md);
+    padding: 18px 20px;
+    cursor: pointer;
+    font-family: var(--sans);
+    font-size: 16px;
+    color: var(--brand-ink);
+    transition: transform .18s ease, border-color .18s ease, background .18s ease, box-shadow .18s ease;
+    line-height: 1.5;
+  }
+  .option:hover {
+    background: #fff;
+    border-color: var(--brand-gold);
+    transform: translateY(-1px);
+    box-shadow: var(--brand-shadow-soft);
+  }
+  .option:active { transform: translateY(0); }
+  .option.selected {
+    background: #fff;
+    border-color: var(--brand-primary);
+    box-shadow: var(--brand-shadow-soft);
+  }
+  .option-letter {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background: #fff;
+    color: var(--brand-primary);
+    font-weight: 700;
+    font-size: 13px;
+    margin-right: 12px;
+    border: 1.5px solid var(--brand-cream-deep);
+    transition: all .18s ease;
+    vertical-align: middle;
+  }
+  .option:hover .option-letter,
+  .option.selected .option-letter {
+    background: var(--brand-primary);
+    color: #fff;
+    border-color: var(--brand-primary);
+  }
+
+  /* ---------- Buttons ---------- */
+  .btn-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-top: 22px;
+  }
+  .btn {
+    font-family: var(--sans);
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    border-radius: 999px;
+    padding: 14px 28px;
+    cursor: pointer;
+    transition: transform .18s ease, box-shadow .18s ease, background .18s ease, color .18s ease;
+    letter-spacing: 0.01em;
+  }
+  .btn-primary {
+    background: var(--brand-primary);
+    color: #fff;
+    box-shadow: 0 8px 20px -8px rgba(21, 151, 149, 0.55);
+  }
+  .btn-primary:hover {
+    background: var(--brand-primary-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 12px 28px -10px rgba(21, 151, 149, 0.65);
+  }
+  .btn-primary:active { transform: translateY(0); }
+  .btn-primary:disabled {
+    background: var(--brand-cream-deep);
+    color: var(--brand-muted);
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+  }
+  .btn-ghost {
+    background: transparent;
+    color: var(--brand-muted);
+    padding: 14px 18px;
+  }
+  .btn-ghost:hover {
+    color: var(--brand-ink);
+  }
+  .btn-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--brand-primary);
+    color: #fff;
+    padding: 18px 32px;
+    font-size: 17px;
+    text-decoration: none;
+    box-shadow: 0 12px 30px -10px rgba(21, 151, 149, 0.6);
+  }
+  .btn-cta:hover {
+    background: var(--brand-primary-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 16px 36px -10px rgba(21, 151, 149, 0.7);
+  }
+  .btn-large {
+    padding: 16px 34px;
+    font-size: 17px;
+  }
+
+  /* ---------- Result ---------- */
+  .result-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--brand-cream-deep), var(--brand-cream));
+    color: var(--brand-primary);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    padding: 8px 16px;
+    border-radius: 999px;
+    margin-bottom: 16px;
+  }
+  .result-name {
+    font-family: var(--serif);
+    font-size: clamp(28px, 4.6vw, 38px);
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    margin-bottom: 14px;
+  }
+  .result-tagline {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: clamp(17px, 2.4vw, 20px);
+    color: var(--brand-primary);
+    margin-bottom: 22px;
+    line-height: 1.4;
+  }
+  .result-body p {
+    margin-bottom: 14px;
+    font-size: 16.5px;
+    color: var(--brand-ink);
+    line-height: 1.65;
+  }
+  .action-card {
+    margin-top: 22px;
+    padding: 22px 22px 22px 24px;
+    background: linear-gradient(135deg, #FFF8EE, var(--brand-cream));
+    border-left: 4px solid var(--brand-gold);
+    border-radius: var(--radius-md);
+  }
+  .action-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--brand-primary);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .action-card h3 {
+    font-family: var(--serif);
+    font-size: 19px;
+    margin-bottom: 8px;
+    color: var(--brand-ink);
+  }
+  .action-card p {
+    font-size: 15.5px;
+    color: var(--brand-ink);
+    line-height: 1.6;
+  }
+
+  .cta-block {
+    margin-top: 30px;
+    padding: 26px;
+    background: var(--brand-ink);
+    color: #fff;
+    border-radius: var(--radius-md);
+    text-align: center;
+  }
+  .cta-block h3 {
+    font-family: var(--serif);
+    font-size: 22px;
+    margin-bottom: 8px;
+    line-height: 1.3;
+  }
+  .cta-block p {
+    color: rgba(255,255,255,0.78);
+    font-size: 15px;
+    margin-bottom: 18px;
+    max-width: 480px;
+    margin-left: auto; margin-right: auto;
+  }
+
+  .restart-row {
+    margin-top: 22px;
+    text-align: center;
+  }
+  .restart-link {
+    background: none;
+    border: none;
+    color: var(--brand-muted);
+    font-family: var(--sans);
+    font-size: 14px;
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .restart-link:hover { color: var(--brand-ink); }
+
+  .footer-note {
+    margin-top: 26px;
+    font-size: 12px;
+    color: var(--brand-muted);
+    text-align: center;
+    max-width: 720px;
+  }
+
+  /* ---------- Mobile ---------- */
+  @media (max-width: 600px) {
+    .page { padding: 22px 14px 36px; }
+    .card { padding: 30px 22px; border-radius: 18px; }
+    .welcome-intro { margin-bottom: 22px; }
+    .welcome-intro .pill { margin-bottom: 18px; }
+    h1.hero em { margin-top: 2px; }
+    .callout { padding: 18px 18px 18px 16px; }
+    .callout li { font-size: 15px; gap: 10px; }
+    .option { padding: 16px 16px; font-size: 15.5px; }
+    .btn-row { flex-direction: row; }
+    .btn { padding: 12px 22px; font-size: 15px; }
+    .btn-cta { padding: 16px 24px; font-size: 16px; width: 100%; justify-content: center; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+</style>
+</head>
+<body>
+<main class="page">
+
+  <div class="brand-header">
+    <!-- If you save your logo as logo.png in this folder, it'll replace the wordmark below. -->
+    <img src="logo.png" alt="Transform Strong" class="brand-logo"
+         onerror="this.outerHTML='<div class=&quot;brand-logo-text&quot;>TRANSFORM STRONG</div>'">
+  </div>
+
+  <!-- Welcome intro (shows on welcome screen only) -->
+  <div class="welcome-intro" id="welcomeIntro">
+    <div class="pill">Free Quiz for Women 40+</div>
+    <h1 class="hero">Why Can't I Lose Weight <em>Anymore?</em></h1>
+    <p class="lede">Answer 5 honest questions and find out exactly what's happening to your metabolism — and what to do about it.</p>
+    <p class="time-tag">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      Takes less than 2 minutes
+    </p>
+  </div>
+
+  <!-- Progress bar -->
+  <div class="progress-wrap" id="progressWrap" aria-hidden="true">
+    <div class="progress-meta">
+      <span id="progressLabel">Question 1 of 5</span>
+      <span id="progressPercent">20%</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+  </div>
+
+  <section class="card" id="card">
+
+    <!-- ============== WELCOME (BEFORE WE START) ============== -->
+    <div class="screen active entering" id="screen-welcome">
+      <div class="pill">Before We Start</div>
+      <h2 class="welcome-h2">Your body after 40 is <em>not the same body</em> as before.</h2>
+      <p class="welcome-body">The frustrating part is that the way you used to lose weight — eating less, grinding through cardio, white-knuckling it — that stuff doesn't just work less now. For a lot of women in perimenopause, it actually <strong>makes things worse.</strong></p>
+
+      <div class="callout">
+        <div class="callout-title">Here's what most people miss:</div>
+        <ul>
+          <li><span class="callout-icon">⚡</span><span>Hormone shifts in perimenopause change how your body burns fat — sometimes for years.</span></li>
+          <li><span class="callout-icon">😴</span><span>Sleep loss and chronic stress physically block fat loss at the cellular level.</span></li>
+          <li><span class="callout-icon">🚫</span><span>Eating less often backfires — it slows your metabolism down even more.</span></li>
+          <li><span class="callout-icon">💪</span><span>Your body now responds to specific kinds of training that didn't matter in your 30s.</span></li>
+        </ul>
+      </div>
+
+      <button class="btn btn-primary btn-large" id="startBtn">Start the Quiz →</button>
+    </div>
+
+    <!-- ============== QUESTIONS (rendered dynamically) ============== -->
+    <div class="screen" id="screen-question">
+      <div class="q-number" id="qNumber">Question 1 of 5</div>
+      <h2 class="question" id="qText"></h2>
+      <div class="options" id="qOptions" role="radiogroup"></div>
+      <div class="btn-row">
+        <button class="btn btn-ghost" id="backBtn">← Back</button>
+        <button class="btn btn-primary" id="nextBtn" disabled>Next →</button>
+      </div>
+    </div>
+
+    <!-- ============== RESULT ============== -->
+    <div class="screen" id="screen-result">
+      <div class="result-badge" id="resultBadge">Your Result</div>
+      <h2 class="result-name" id="resultName"></h2>
+      <div class="result-tagline" id="resultTagline"></div>
+      <div class="result-body" id="resultBody"></div>
+
+      <div class="action-card">
+        <div class="action-label">✅ Your action step this week</div>
+        <h3 id="resultActionTitle"></h3>
+        <p id="resultActionBody"></p>
+      </div>
+
+      <div class="cta-block">
+        <h3>Want a personalized plan for your body?</h3>
+        <p>In 15 minutes, I'll help you map out exactly what's been getting in the way — and the simplest next step to lose 15–20 lbs without giving up brownies (or your life).</p>
+        <a class="btn btn-cta" href="https://api.leadconnectorhq.com/widget/booking/gQtolYI7GJBn4EgePvgy" target="_blank" rel="noopener">
+          Book Your 15-Minute Metabolism Audit
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+
+      <div class="restart-row">
+        <button class="restart-link" id="restartBtn">↺ Retake the quiz</button>
+      </div>
+    </div>
+
+  </section>
+
+  <p class="footer-note">© Transform Strong · This quiz is for educational purposes and is not medical advice.</p>
+</main>
+
+<script>
+  // ============== QUIZ DATA ==============
+  // Each option maps to a "type" code: cortisol | underfueled | hormone
+
+  const QUESTIONS = [
+    {
+      text: "Tell me about your energy lately.",
+      options: [
+        { letter: "A", text: "I crash hard mid-afternoon and reach for caffeine or sugar to get through.", type: "cortisol" },
+        { letter: "B", text: "I'm tired most of the day, even when I sleep enough.", type: "underfueled" },
+        { letter: "C", text: "I wake up exhausted no matter what — sleep just isn't restoring me anymore.", type: "hormone" }
+      ]
+    },
+    {
+      text: "Where has the weight been showing up?",
+      options: [
+        { letter: "A", text: "Mostly around my belly and middle — and that's new for me.", type: "cortisol" },
+        { letter: "B", text: "Slow creep all over, even though I'm eating less than I used to.", type: "underfueled" },
+        { letter: "C", text: "It just appeared in the last year or two — almost overnight.", type: "hormone" }
+      ]
+    },
+    {
+      text: "Which eating pattern sounds most like you?",
+      options: [
+        { letter: "A", text: "Caffeine for breakfast, skip lunch when busy, then graze or stress-snack at night.", type: "cortisol" },
+        { letter: "B", text: "I track calories or stay low-carb. I'm strict most of the time.", type: "underfueled" },
+        { letter: "C", text: "I eat the way I always have — but my body doesn't respond like it used to.", type: "hormone" }
+      ]
+    },
+    {
+      text: "When it comes to working out…",
+      options: [
+        { letter: "A", text: "I push hard with cardio or HIIT and feel pretty wiped out after.", type: "cortisol" },
+        { letter: "B", text: "I do a lot of cardio. I'm a little nervous to lift heavy weights.", type: "underfueled" },
+        { letter: "C", text: "I used to lose weight from working out. Now? Crickets.", type: "hormone" }
+      ]
+    },
+    {
+      text: "Which of these sounds most like you these days?",
+      options: [
+        { letter: "A", text: "Wired but tired. Anxious. Racing thoughts at night.", type: "cortisol" },
+        { letter: "B", text: "Always cold, brain fog, hair feels thinner, low libido.", type: "underfueled" },
+        { letter: "C", text: "Hot flashes, night sweats, mood swings, and/or irregular periods.", type: "hormone" }
+      ]
+    }
+  ];
+
+  const RESULTS = {
+    cortisol: {
+      badge: "Your Type",
+      name: "The Stressed-Out Cortisol Carrier",
+      tagline: "Your body is stuck in survival mode — and it's holding onto belly fat for safety.",
+      body: [
+        "You're not eating too much. You're not lazy. Your nervous system is running hot — chronic stress, sleep that doesn't fully restore, and high-intensity workouts piled on top of an already overworked system. When cortisol stays elevated, your body reads it as <em>danger</em> and clings to belly fat as protection. Smart survival response — just one that's working against you in modern life.",
+        "Here's the cruel twist: doing <em>more</em> (more workouts, more restriction, more pushing) makes it worse. Cortisol cares more about whether you feel safe than whether you ate a perfect lunch. Your metabolism doesn't need punishment — it needs permission to relax.",
+        "The women who unlock this respond fast — sometimes in two or three weeks — because their body finally gets the message that it's okay to let go."
+      ],
+      actionTitle: "🎯 This week's first step: build a 10-minute \"off-ramp.\"",
+      actionBody: "Every evening this week, give yourself ONE 10-minute decompression — a walk after dinner, slow breathing, or sitting outside without your phone. No screens, no agenda. Lowering cortisol at night is the single fastest way to start unlocking belly fat in perimenopause."
+    },
+    underfueled: {
+      badge: "Your Type",
+      name: "The Under-Fueled Achiever",
+      tagline: "You've been so \"good\" for so long — your metabolism stopped trusting you.",
+      body: [
+        "Years of cutting calories, going low-carb, and out-cardio-ing yourself have taught your body one thing: food is unreliable. So it slowed everything down to protect you. You're not failing at willpower — you're succeeding at restriction so well that your body adapted. That's why eating less and doing more keeps backfiring.",
+        "In perimenopause, an under-fueled body is even more reactive. Your hormones need protein, healthy fats, real carbs, and consistency to function. The fix isn't another diet — it's strategically eating <em>more</em> of the right things so your metabolism finally feels safe enough to let go of weight.",
+        "The good news? Your body wants to work. It just needs proof that fuel is coming. When it gets that proof, things shift fast — energy first, then the scale."
+      ],
+      actionTitle: "🎯 This week's first step: 30 grams of protein at breakfast.",
+      actionBody: "Not \"some\" protein. Thirty grams (think: 4 eggs + Greek yogurt, or a protein shake with cottage cheese), every day this week. This single change calms hunger, stabilizes blood sugar, and tells your metabolism it's safe to start burning again. And yes — brownies still fit."
+    },
+    hormone: {
+      badge: "Your Type",
+      name: "The Hormone-Hijacked Powerhouse",
+      tagline: "What used to work doesn't anymore — and it's not your fault. It's perimenopause.",
+      body: [
+        "Your old playbook (eat less, move more, push through) was built for the body you had at 30. But somewhere between 40 and 50, estrogen and progesterone start the slow rollercoaster of perimenopause — and the rules of the game completely change. Insulin sensitivity drops. Muscle loss accelerates. Sleep gets weird. None of it is in your head.",
+        "Here's the part nobody tells you: this isn't a death sentence for your body — it's a redesign opportunity. Women who learn the new rules (more protein, smarter strength training, fewer \"diet\" foods, better sleep) actually feel <em>better</em> at 50 than they did at 35.",
+        "You don't need more discipline. You need a strategy built for the body you have now."
+      ],
+      actionTitle: "🎯 This week's first step: lift something heavy three days this week.",
+      actionBody: "Not light dumbbells for high reps — actually heavy. Squats, deadlifts, rows, presses with weight that feels challenging by rep 8. Strength training is the #1 lever for perimenopausal metabolism, hormone health, and body composition. Twenty minutes, three times. That's it."
+    }
+  };
+
+  // ============== STATE ==============
+  let currentIndex = 0;       // index into QUESTIONS
+  let answers = [];           // one entry per question: type code
+
+  // ============== ELEMENTS ==============
+  const screens = {
+    welcome: document.getElementById('screen-welcome'),
+    question: document.getElementById('screen-question'),
+    result: document.getElementById('screen-result')
+  };
+  const welcomeIntro = document.getElementById('welcomeIntro');
+  const progressWrap = document.getElementById('progressWrap');
+  const progressFill = document.getElementById('progressFill');
+  const progressLabel = document.getElementById('progressLabel');
+  const progressPercent = document.getElementById('progressPercent');
+  const qNumberEl = document.getElementById('qNumber');
+  const qTextEl = document.getElementById('qText');
+  const qOptionsEl = document.getElementById('qOptions');
+  const nextBtn = document.getElementById('nextBtn');
+  const backBtn = document.getElementById('backBtn');
+  const startBtn = document.getElementById('startBtn');
+  const restartBtn = document.getElementById('restartBtn');
+
+  // ============== TRANSITIONS ==============
+  function switchScreen(fromKey, toKey, onMid) {
+    const from = screens[fromKey];
+    const to = screens[toKey];
+
+    if (from === to) {
+      if (onMid) onMid();
+      return;
+    }
+
+    from.classList.remove('entering');
+    from.classList.add('exiting');
+
+    setTimeout(() => {
+      from.classList.remove('active', 'exiting');
+      if (onMid) onMid();
+      to.classList.add('active');
+      // double rAF to ensure CSS picks up the transition
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        to.classList.add('entering');
+        // smooth scroll to top of card on transitions
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }));
+    }, 280);
+  }
+
+  function fadeQuestion(updateFn) {
+    const q = screens.question;
+    q.classList.remove('entering');
+    q.classList.add('exiting');
+    setTimeout(() => {
+      updateFn();
+      q.classList.remove('exiting');
+      requestAnimationFrame(() => requestAnimationFrame(() => q.classList.add('entering')));
+    }, 220);
+  }
+
+  // ============== RENDERING ==============
+  function renderQuestion() {
+    const q = QUESTIONS[currentIndex];
+    qNumberEl.textContent = `Question ${currentIndex + 1} of ${QUESTIONS.length}`;
+    qTextEl.textContent = q.text;
+
+    qOptionsEl.innerHTML = '';
+    q.options.forEach((opt, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'option';
+      btn.setAttribute('role', 'radio');
+      btn.setAttribute('aria-checked', 'false');
+      btn.dataset.type = opt.type;
+      btn.dataset.index = i;
+      btn.innerHTML = `<span class="option-letter">${opt.letter}</span>${opt.text}`;
+
+      // restore selection on Back navigation
+      if (answers[currentIndex] && answers[currentIndex].chosenIndex === i) {
+        btn.classList.add('selected');
+        btn.setAttribute('aria-checked', 'true');
+      }
+
+      btn.addEventListener('click', () => selectOption(btn, opt, i));
+      qOptionsEl.appendChild(btn);
+    });
+
+    // progress
+    const pct = Math.round(((currentIndex) / QUESTIONS.length) * 100);
+    const pctIncluding = Math.round(((currentIndex + (answers[currentIndex] ? 1 : 0)) / QUESTIONS.length) * 100);
+    progressFill.style.width = pctIncluding + '%';
+    progressLabel.textContent = `Question ${currentIndex + 1} of ${QUESTIONS.length}`;
+    progressPercent.textContent = pctIncluding + '%';
+
+    // buttons
+    nextBtn.disabled = !answers[currentIndex];
+    nextBtn.textContent = currentIndex === QUESTIONS.length - 1 ? 'See My Result →' : 'Next →';
+    backBtn.style.visibility = currentIndex === 0 ? 'hidden' : 'visible';
+  }
+
+  function selectOption(btn, opt, idx) {
+    qOptionsEl.querySelectorAll('.option').forEach(b => {
+      b.classList.remove('selected');
+      b.setAttribute('aria-checked', 'false');
+    });
+    btn.classList.add('selected');
+    btn.setAttribute('aria-checked', 'true');
+    answers[currentIndex] = { type: opt.type, chosenIndex: idx };
+    nextBtn.disabled = false;
+
+    // auto-advance progress fill (visual feedback)
+    const pct = Math.round(((currentIndex + 1) / QUESTIONS.length) * 100);
+    progressFill.style.width = pct + '%';
+    progressPercent.textContent = pct + '%';
+  }
+
+  // ============== NAV ==============
+  function start() {
+    currentIndex = 0;
+    answers = [];
+    if (welcomeIntro) welcomeIntro.style.display = 'none';
+    progressWrap.classList.add('visible');
+    progressWrap.setAttribute('aria-hidden', 'false');
+    switchScreen('welcome', 'question', renderQuestion);
+  }
+
+  function next() {
+    if (!answers[currentIndex]) return;
+    if (currentIndex < QUESTIONS.length - 1) {
+      currentIndex++;
+      fadeQuestion(renderQuestion);
+    } else {
+      showResult();
+    }
+  }
+
+  function back() {
+    if (currentIndex > 0) {
+      currentIndex--;
+      fadeQuestion(renderQuestion);
+    }
+  }
+
+  function showResult() {
+    // tally
+    const tally = { cortisol: 0, underfueled: 0, hormone: 0 };
+    answers.forEach(a => { if (a) tally[a.type]++; });
+
+    // pick winner — highest count, ties broken by perimenopause priority: hormone > cortisol > underfueled
+    const order = ['hormone', 'cortisol', 'underfueled'];
+    let winner = order[0];
+    let max = -1;
+    order.forEach(k => {
+      if (tally[k] > max) { max = tally[k]; winner = k; }
+    });
+
+    const r = RESULTS[winner];
+    document.getElementById('resultBadge').textContent = r.badge;
+    document.getElementById('resultName').textContent = r.name;
+    document.getElementById('resultTagline').textContent = '"' + r.tagline + '"';
+    const bodyEl = document.getElementById('resultBody');
+    bodyEl.innerHTML = r.body.map(p => `<p>${p}</p>`).join('');
+    document.getElementById('resultActionTitle').textContent = r.actionTitle;
+    document.getElementById('resultActionBody').textContent = r.actionBody;
+
+    // hide progress on result
+    progressWrap.classList.remove('visible');
+    progressWrap.setAttribute('aria-hidden', 'true');
+
+    switchScreen('question', 'result');
+  }
+
+  function restart() {
+    switchScreen('result', 'welcome', () => {
+      currentIndex = 0;
+      answers = [];
+      progressFill.style.width = '0%';
+      if (welcomeIntro) welcomeIntro.style.display = '';
+    });
+  }
+
+  // ============== EVENTS ==============
+  startBtn.addEventListener('click', start);
+  nextBtn.addEventListener('click', next);
+  backBtn.addEventListener('click', back);
+  restartBtn.addEventListener('click', restart);
+
+  // keyboard nav: 1/2/3 to choose, Enter to advance
+  document.addEventListener('keydown', (e) => {
+    if (!screens.question.classList.contains('active')) return;
+    if (e.key === '1' || e.key === '2' || e.key === '3') {
+      const idx = parseInt(e.key, 10) - 1;
+      const opts = qOptionsEl.querySelectorAll('.option');
+      if (opts[idx]) opts[idx].click();
+    } else if (e.key === 'Enter' && !nextBtn.disabled) {
+      next();
+    } else if (e.key === 'ArrowLeft' && currentIndex > 0) {
+      back();
+    }
+  });
+</script>
+</body>
+</html>
